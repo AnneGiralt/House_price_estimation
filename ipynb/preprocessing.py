@@ -96,16 +96,14 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
             for the encoding.
         """
         
-        columns_of_X = X.columns
+        columns = X.columns
         
-        for c in self.feature_names :
-            if c not in columns_of_X:
-                warn("The column " + c + " doesn't exist")
-            else:
-                # Could find better ?
-                self.categories[c] = sorted(list(set(X[c].values)))
+        for f in self.feature_names :
+            if self._checkFeatureIn(f, columns):
+                self.categories[f] = sorted(list(set(X[f].values)))
+
         return self
-    
+        
     
     def transform(self, X, y=None): 
         """
@@ -129,32 +127,37 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         
         columns_of_X = X.columns
         
-        for c in self.feature_names :
+        for f in self.feature_names :
             
-            ## Could write a checking function with better warning sentences !!!
-            if c not in self.categories:
-                warn("The column " + c + " doesn't exist")
-            elif c not in columns_of_X:
-                warn("The column " + c + " doesn't exist")
-            else:
-                categories = self.categories[c]
+            if self._checkFeatureIn(f, self.categories) and \
+               self._checkFeatureIn(f, columns_of_X):
+        
+                categories = self.categories[f]
                 
-                
-                # Get the result on a one-hot encoding on the colums X[c] 
+                # Get the result on a one-hot encoding on the colums X[f] 
                 # with categories obtained by the fit method.
-                encoded_np = self._encodColumn(X[c], categories)
+                encoded_np = self._encodColumn(X[f], categories)
                 
                 # Create a DataFrame from the encoded numpy array.
-                df_encoded = self._createEncodedDataFrame(encoded_np, c, 
+                df_encoded = self._createEncodedDataFrame(encoded_np, f, 
                                                           categories)
                 
-                # Remove the column [X[c]] from X.
-                self._removeColumn(c)
+                # Remove the column [X[f]] from X.
+                self._removeColumn(f)
             
                 # Add the new encoded DataFrame to X_new.
                 self._addEncoded(df_encoded)
                 
         return self.X_new
+    
+    
+    def _checkFeatureIn(self, f, container):
+        if f not in container:
+            message = "The feature " + f + " not in the given DataFrame." 
+            print(message)
+            return False
+        else:
+            return True
         
         
     def _encodColumn(self, column, categories):
@@ -248,6 +251,12 @@ if __name__=="__main__":
     encoder.fit(X_fit)
     X_encoded = encoder.transform(X_transform) 
     print(X_encoded)
+    
+    # The test1 feature given in implementation not in the Dataframe to fit.
+    encoder.fit(X_fit[["test2"]])
+                
+    # The test1 given in implementation is not in the DataFrame to transform.
+    encoder.transform(X_transform[['test2']])
 
 
 
