@@ -74,12 +74,13 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
             catagories present in the coresponding column in the DataFrame to fit.
     """
     
-    def __init__(self):
+    def __init__(self, feature_names):
         self.X = None
         self.X_new = None
         self.categories = {}
+        self.feature_names = feature_names
     
-    def fit(self, X, col_names, y=None): 
+    def fit(self, X, y=None): 
         """
         Fit the categories dictionary attribute by geting cataegories from every col_names
         columns of X.
@@ -95,7 +96,7 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         
         columns_of_X = X.columns
         
-        for c in col_names :
+        for c in self.feature_names :
             if c not in columns_of_X:
                 warn("The column " + c + " doesn't exist")
             else:
@@ -104,7 +105,7 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         return self
     
     
-    def transform(self, X, col_names, y=None): 
+    def transform(self, X, y=None): 
         """
         Transform the Pandas DataFrame X by one-hot encod the given columns.
         
@@ -128,7 +129,7 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         
         columns_of_X = X.columns
         
-        for c in col_names :
+        for c in self.feature_names :
             
             ## Could write a checking function with better warning sentences !!!
             if c not in self.categories:
@@ -242,9 +243,9 @@ if __name__=="__main__":
     X_fit = pd.DataFrame(data = data1)
     X_transform = pd.DataFrame(data = data2)
     
-    encoder = OneHotEncodTransformer()
-    encoder.fit(X_fit, ['test1'])
-    X_encoded = encoder.transform(X_transform,['test1']) 
+    encoder = OneHotEncodTransformer(["test1"])
+    encoder.fit(X_fit)
+    X_encoded = encoder.transform(X_transform) 
     print(X_encoded)
 
 
