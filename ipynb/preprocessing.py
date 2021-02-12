@@ -62,6 +62,8 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
     
         Parameters
         ----------
+        feature_names : list of str
+            The list of name of columns to encod.
         
         Attributes
         ----------
@@ -72,6 +74,8 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         categories : dict of list of str
             A dictionary with column names as keys. A coresponding value will be a list of 
             catagories present in the coresponding column in the DataFrame to fit.
+        feature_names : list of str
+            The list of name of columns to encod.
     """
     
     def __init__(self, feature_names):
@@ -90,8 +94,6 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         X : Pandas DataFrame
             DataFrame to extract the differents categories which will be used for 
             the encoding.
-        columns : list of string
-            The list of names of columns to encod.
         """
         
         columns_of_X = X.columns
@@ -113,8 +115,6 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         ----------
         X : Pandas DataFrame
             The Pandas DataFrame to transform by encoding given columns.
-        columns : list of str 
-            The list of names of columns to encod.
         
         Returns
         -------
