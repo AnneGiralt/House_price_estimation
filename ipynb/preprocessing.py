@@ -4,7 +4,6 @@ from warnings import warn
 import pandas as pd
 import numpy as np
 
-
 import hashlib
 
 def selectIntWithRatio(i, ratio, hash):
@@ -72,8 +71,9 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         X_new : Pandas DataFrame
             Pandas DataFrame to return at the end.
         categories : dict of list of str
-            A dictionary with column names as keys. A coresponding value will be a list of 
-            catagories present in the coresponding column in the DataFrame to fit.
+            A dictionary with column names as keys. A coresponding value will 
+            be a list of catagories present in the coresponding column in the 
+            DataFrame to fit.
         feature_names : list of str
             The list of name of columns to encod.
     """
@@ -86,14 +86,14 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
     
     def fit(self, X, y=None): 
         """
-        Fit the categories dictionary attribute by geting cataegories from every col_names
-        columns of X.
+        Fit the categories dictionary attribute by geting categories from 
+        every columns of X of names in feature_name.
         
         Parameters
         ----------
         X : Pandas DataFrame
-            DataFrame to extract the differents categories which will be used for 
-            the encoding.
+            DataFrame to extract the differents categories which will be used 
+            for the encoding.
         """
         
         columns_of_X = X.columns
@@ -145,7 +145,8 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
                 encoded_np = self._encodColumn(X[c], categories)
                 
                 # Create a DataFrame from the encoded numpy array.
-                df_encoded = self._createEncodedDataFrame(encoded_np, c, categories)
+                df_encoded = self._createEncodedDataFrame(encoded_np, c, 
+                                                          categories)
                 
                 # Remove the column [X[c]] from X.
                 self._removeColumn(c)
@@ -169,8 +170,8 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         -------
         encoded : a numpy array
             The numpy array given by the one-hot encoding of the given column.
-            The number of row is the same that columns, and the number of columns
-            is the number of categories.
+            The number of row is the same that columns, and the number of 
+            columns is the number of categories.
         categories : list of str
             The list of all values possible in the given column.
         """
