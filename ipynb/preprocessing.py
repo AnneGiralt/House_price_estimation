@@ -100,7 +100,7 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         
         for f in self.feature_names :
             if self._checkFeatureIn(f, columns):
-                self.categories[f] = sorted(list(set(X[f].values)))
+                self.categories[f] = sorted(list(set(str(X[f].values))))
 
         return self
         
@@ -182,6 +182,8 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         encoder = OneHotEncoder(handle_unknown ='ignore')
         
         # Fit the encoder
+        if 'nan' in categories:
+            categories.remove('nan')
         values = np.array(categories).reshape((-1,1))
         encoder.fit(values)
         
