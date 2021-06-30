@@ -110,6 +110,58 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import OneHotEncoder
 
+class ReplaceTransformer(BaseEstimator, TransformerMixin):
+    """
+    This transformer replace elements of given columns by following given 
+    replacement rules. All other columns will remains unchanged. 
+
+        Parameters
+        ----------
+        replacement_dict : dict
+            The dictionary of replacement rules. Keys are names of columns to 
+            change and corresponding values are the dictionary of replacement
+            for this column.
+
+        Attributes
+        ----------
+        X : Pandas DataFrame
+            Original Pandas DataFrame.
+              
+        replacement_dict : dict
+            The dictionary of replacement rules. Keys are names of columns to 
+            change and corresponding values are the dictionary of replacement
+            for this column.
+    """
+
+    def __init__(self, replacement_dict):
+        self.replacement_dict = replacement_dict
+        
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        """
+        Transform the Pandas DataFrame X using the replacement dictionary.
+
+        Parameters
+        ----------
+        X : Pandas DataFrame
+            The Pandas DataFrame to transform.
+
+        Returns
+        -------
+        X_new : Pandas DataFrame
+            The DataFrame resulting from the transformation.       
+        """
+
+        X_new = X.copy()
+        
+        for column, dictionary in self.replacement_dict.items():
+            X_new[column].replace(to_replace = dictionary, inplace =True)
+
+        return X_new
+
+
 class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
     """
     This transformer create a DataFrame by one-hot encod some columns of a 
