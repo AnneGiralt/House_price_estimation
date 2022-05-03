@@ -1,2 +1,2 @@
 # House_price_estimation
-A Kaggle exercie of prediction on the price of houses 
+A little prediction exercise on house prices using classical dataset from Kaggle.
