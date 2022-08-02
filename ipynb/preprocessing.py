@@ -1,45 +1,4 @@
-import hashlib
 import numpy as np
-
-
-def nonTrivialColumn(dataFrame, NaN_is_info = False):
-    """
-    This function search into a given DataFrame for the columns which are not
-    trivial. Here a trivial columns have a unique value for every entry. 
-    Theses columns doesn't gives information in this dataset, and its 
-    eploitation could be questioned in general cases. If Nan_is_info is set up 
-    to true, a column with at least one Nan value is considered as non
-    trivial.
-
-
-            Parameters
-            ----------
-            dataFrame : Pandas DataFrame 
-                A Pandas DataFrame where we search for trivial columns.
-                
-            NaN_is_info : Boolean
-                An option to keep the column of df with a unique value,
-                and some NaN values.
-
-            Returns
-            -------
-            non_trivial_col : List
-                A list of non trivial columns of df.
-    """
-    
-    columns = dataFrame.columns
-    non_trivial_col = []
-    
-    for c in columns:
-        val_counts = dataFrame[c].value_counts()
-        
-        if len(val_counts) != 1:
-            non_trivial_col.append(c)   
-        else:
-            if NaN_is_info and val_counts.sum() != len(df) :                
-                non_trivial_col.append(c)         
-    
-    return non_trivial_col
 
 
 import pandas as pd
@@ -48,13 +7,13 @@ from sklearn.preprocessing import OneHotEncoder
 
 class ReplaceTransformer(BaseEstimator, TransformerMixin):
     """
-    This transformer replace elements of given columns by following given 
-    replacement rules. All other columns will remains unchanged. 
+    This transformer replace elements of given columns by following given
+    replacement rules. All other columns will remains unchanged.
 
         Parameters
         ----------
         replacement_dict : dict
-            The dictionary of replacement rules. Keys are names of columns to 
+            The dictionary of replacement rules. Keys are names of columns to
             change and corresponding values are the dictionary of replacement
             for this column.
 
@@ -64,7 +23,7 @@ class ReplaceTransformer(BaseEstimator, TransformerMixin):
             Original Pandas DataFrame.
               
         replacement_dict : dict
-            The dictionary of replacement rules. Keys are names of columns to 
+            The dictionary of replacement rules. Keys are names of columns to
             change and corresponding values are the dictionary of replacement
             for this column.
     """
@@ -87,7 +46,7 @@ class ReplaceTransformer(BaseEstimator, TransformerMixin):
         Returns
         -------
         X_new : Pandas DataFrame
-            The DataFrame resulting from the transformation.       
+            The DataFrame resulting from the transformation. 
         """
 
         X_new = X.copy()
@@ -100,7 +59,7 @@ class ReplaceTransformer(BaseEstimator, TransformerMixin):
 
 class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
     """
-    This transformer create a DataFrame by one-hot encod some columns of a 
+    This transformer create a DataFrame by one-hot encod some columns of a
     given DataFrame. The columns to encod are given as a list of sting when the
     transformer is instantiated. All other colums will remains unchanged.
 
@@ -118,7 +77,7 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
             Pandas DataFrame to return after encoding.
           
         categories : Dict of string
-            A dictionary with column's names as keys. The corresponding value 
+            A dictionary with column's names as keys. The corresponding value
             is the list of categories existing in the column for the DataFrame
             given when the fit method is called.
             
@@ -140,7 +99,7 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         Parameters
         ----------
         X : Pandas DataFrame
-            DataFrame to extract the differents categories which will be used 
+            DataFrame to extract the differents categories which will be used
             for the encoding.
         """
 
@@ -164,8 +123,8 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
         Returns
         -------
         self.X_new : Pandas DataFrame
-            The DataFrame resulting from the transformation of every columns of 
-            feature_names by a one-hot encoding.        
+            The DataFrame resulting from the transformation of every columns of
+            feature_names by a one-hot encoding.
         """
 
         self.X = X
@@ -223,14 +182,14 @@ class OneHotEncodTransformer(BaseEstimator, TransformerMixin):
 
         Parameters
         ----------
-        column : a Pandas Series 
+        column : a Pandas Series
             The column to encod.
 
         Returns
         -------
         encoded : a numpy array
             The numpy array given by the one-hot encoding of the given column.
-            The number of row is the same that in the column, and the number of 
+            The number of row is the same that in the column, and the number of
             columns is the number of categories.
             
         categories : list of str
